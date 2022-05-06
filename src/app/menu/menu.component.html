@@ -7,11 +7,11 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto d-flex align-items-center"> <!--mr para deixar na esquerda-->
       <li class="nav-item active">
-        <img src="https://avatars.githubusercontent.com/u/89114089?v=4" alt="" width="50vw" height="50vh"
+        <img src="{{foto}}" alt="imagem do usuario" width="50vw" height="50vh"
           class="img-fluid rounded-circle">
       </li>
       <li class="nav-item pl-3 ">
-        <p class="m-0 font-weight-bold text-white">Nome do usuário</p>
+        <p class="m-0 font-weight-bold text-white">{{nome}}</p>
       </li>
       <a href="">
         <li class="nav-item pl-3">
@@ -22,7 +22,7 @@
 
     <ul class="navbar-nav ml-auto d-flex align-items-center"> <!--ml para deixar na direita-->
       <li class="nav-item pl-3">
-        <a class="m-0 font-weight-bold text-white">Sair <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+        <a (click)="sair()" class="m-0 font-weight-bold text-white">Sair <i class="fa fa-sign-out" aria-hidden="true"></i></a>
       </li>
     </ul>
   </div>
