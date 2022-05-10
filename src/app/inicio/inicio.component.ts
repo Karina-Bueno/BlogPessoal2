@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
+import { Postagem } from '../model/Postagem';
+import { Tema } from '../model/Tema';
+import { Usuario } from '../model/Usuario';
+import { PostagemService } from '../service/postagem.service';
+import { TemaService } from '../service/tema.service';
 
 @Component({
   selector: 'app-inicio',
@@ -8,9 +13,20 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements OnInit {
+  postagem: Postagem = new Postagem()
+  listaPostagem: Postagem[]
+
+  tema: Tema = new Tema()
+  listaTemas: Tema[]
+  idTema: number
+
+  usuario: Usuario = new Usuario()
+  idUsuario = environment.id
 
   constructor(
-    private router: Router
+    private router: Router,
+    private postagemService: PostagemService,
+    private temaService: TemaService
   ) { }
 
   ngOnInit() {
@@ -18,6 +34,42 @@ export class InicioComponent implements OnInit {
     if(environment.token == "") {
       this.router.navigate(["/login"])
     }
+
+    this.getAllTemas()
+    this.getAllPostagem()
+  }
+
+  getAllTemas() {
+    this.temaService.getAllTema().subscribe((resp: Tema[]) => {
+      this.listaTemas = resp
+    })
+  }
+
+  findByIdTema() {
+    this.temaService.getByIdTema(this.idTema).subscribe((resp: Tema) => {
+      this.tema = resp
+    })
+  }
+
+  getAllPostagem() {
+    this.postagemService.getAllPostagem().subscribe((resp: Postagem[]) => {
+      this.listaPostagem = resp
+    })
+  }
+
+  publicar() {
+    this.tema.id = this.idTema
+    this.postagem.tema = this.tema
+
+    this.usuario.id = this.idUsuario
+    this.postagem.usuarios = this.usuario
+
+    this.postagemService.postPostagem(this.postagem).subscribe((resp: Postagem) => {
+      this.postagem = resp
+      alert("Postagem realizada com sucesso")
+      this.postagem = new Postagem()
+      this.getAllPostagem()
+    })
   }
 
 }
